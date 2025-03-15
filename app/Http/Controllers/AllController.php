@@ -40,7 +40,7 @@ class AllController extends Controller
             ]);
         }
 
-        $response = Http::get("http://localhost:4000/api/v2/hianime/anime/{$animeId}");
+        $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/anime/{$animeId}");
         $data = $response->json();
 
         if (!$response->successful()) {
@@ -132,7 +132,7 @@ public function logout(Request $request)
     public function animeList()
     {
         // Ambil data dari Aniwatch API
-        $response = Http::get('http://localhost:4000/api/v2/hianime/home');
+        $response = Http::get('https://aniwatchapi-seven.vercel.app/api/v2/hianime/home');
         $data = $response->json();
         
         if ($response->successful() && isset($data['data'])) {
@@ -174,7 +174,7 @@ public function logout(Request $request)
     $perPage = 20;
     
     // Keep the hyphenated format for API request
-    $response = Http::get("http://localhost:4000/api/v2/hianime/genre/{$genre}", [
+    $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/genre/{$genre}", [
         'page' => $page,
         'perPage' => $perPage
     ]);
@@ -209,7 +209,7 @@ public function logout(Request $request)
 
     public function animeDetail($id)
 {
-    $response = Http::get("http://localhost:4000/api/v2/hianime/anime/{$id}");
+    $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/anime/{$id}");
     $data = $response->json();
 
     if ($response->successful() && isset($data['data']['anime']['info'])) {
@@ -219,7 +219,7 @@ public function logout(Request $request)
         $seasons = $data['data']['seasons'] ?? [];
         
         // Get all upcoming anime IDs
-        $upcomingResponse = Http::get('http://localhost:4000/api/v2/hianime/home');
+        $upcomingResponse = Http::get('https://aniwatchapi-seven.vercel.app/api/v2/hianime/home');
         $upcomingData = $upcomingResponse->json();
         
         if ($upcomingResponse->successful()) {
@@ -255,7 +255,7 @@ public function logout(Request $request)
     public function watching($id)
 {
     // First check if anime is upcoming
-    $animeResponse = Http::get("http://localhost:4000/api/v2/hianime/anime/{$id}");
+    $animeResponse = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/anime/{$id}");
     $animeData = $animeResponse->json();
 
     if ($animeResponse->successful() && isset($animeData['data']['anime']['info']['status'])) {
@@ -269,7 +269,7 @@ public function logout(Request $request)
         }
     }
 
-    $response = Http::get("http://localhost:4000/api/v2/hianime/anime/{$id}/episodes");
+    $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/anime/{$id}/episodes");
     $data = $response->json();
 
     $episodes = [];
@@ -284,7 +284,7 @@ public function logout(Request $request)
         if (!empty($episodes)) {
             $currentEpisode = $episodes[0]; // Default to first episode
             $firstEpisodeId = $episodes[0]['episodeId'];
-            $sourceResponse = Http::get("http://localhost:4000/api/v2/hianime/episode/sources", [
+            $sourceResponse = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/episode/sources", [
                 'animeEpisodeId' => $firstEpisodeId,
                 'server' => 'hd-1',
                 'category' => 'sub'
@@ -299,7 +299,7 @@ public function logout(Request $request)
     }
 
     // Get anime details for the name
-    $animeResponse = Http::get("http://localhost:4000/api/v2/hianime/anime/{$id}");
+    $animeResponse = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/anime/{$id}");
     $animeData = $animeResponse->json();
     $animeName = $animeData['data']['anime']['info']['name'] ?? '';
     
@@ -341,7 +341,7 @@ public function storeComment(Request $request)
 public function getEpisodeSource(Request $request)
 {
     $episodeId = $request->episodeId;
-    $response = Http::get("http://localhost:4000/api/v2/hianime/episode/sources", [
+    $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/episode/sources", [
         'animeEpisodeId' => $episodeId,
         'server' => 'hd-1',
         'category' => 'sub'
@@ -362,7 +362,7 @@ public function getEpisodeSource(Request $request)
         return redirect()->route('anime.list');
     }
 
-    $response = Http::get("http://localhost:4000/api/v2/hianime/search", [
+    $response = Http::get("https://aniwatchapi-seven.vercel.app/api/v2/hianime/search", [
         'q' => $query,
         'page' => $page,
         'perPage' => $perPage
